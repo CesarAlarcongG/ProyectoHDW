@@ -18,8 +18,7 @@ Plataforma web para la gestión centralizada de recursos educativos en la Univer
 | Componente       | Tecnología                                          |
 |------------------|-----------------------------------------------------|
 | **Backend**      | Spring Boot 3.4.5, Spring Security, Spring Data JPA |
-| **Base de Datos**| MySQL 8.0 (Alojamiento local o en la nube)          |
-| **Frontend**     | Astro, React                                        |
+| **Base de Datos**| MySQL 8.0           | 
 | **Herramientas** | Lombok, Maven, JWT para autenticación               |
 
 ## Diagrama de la Base de Datos
