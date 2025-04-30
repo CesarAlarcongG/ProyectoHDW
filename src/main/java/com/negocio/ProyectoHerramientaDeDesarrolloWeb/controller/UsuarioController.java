@@ -1,6 +1,7 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.controller;
 
 
+import com.negocio.ProyectoHerramientaDeDesarrolloWeb.dto.CredencialesDto;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.dto.UsuarioDto;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,38 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    //Crear alumnos /usuario/registro/alumno
+    /// /////////////////////////////////
+    ///
+    /// Registro de ususarios
+    ///
+    /// ////////////////////////////////
+
+    //Alumnos
     @PostMapping("/registro/alumno")
     public ResponseEntity<?> crearAlumno(@RequestBody UsuarioDto registroDto) {
         return usuarioService.registrarUsuario(registroDto, "ALUMNO");
 
     }
+
+    //Docentes y Admnistradores
     @PostMapping("/registro/usuarios")
     public ResponseEntity<?> crearUsuario(@RequestBody UsuarioDto registroDto) {
         return usuarioService.registrarUsuario(registroDto, registroDto.getRol());
     }
+
+    /// /////////////////////////////////
+    ///
+    /// Login
+    ///
+    /// ////////////////////////////////
+
+    //Alumnos y profesores
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody CredencialesDto credencialesDto){
+        return usuarioService.login(credencialesDto);
+    }
+
+
 /**
     //Obtiene
     @GetMapping

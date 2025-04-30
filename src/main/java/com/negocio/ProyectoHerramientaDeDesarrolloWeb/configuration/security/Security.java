@@ -39,15 +39,14 @@ public class Security {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserDetailsService userDetailsService)throws Exception{
         JwtFiltro jwtFiltro = new JwtFiltro(jwtService, userDetailsService);
         return httpSecurity
-                .csrf(csrf -> csrf
-                        .disable()
-                )
+                .csrf(csrf -> csrf.disable())
 
-                //.cors(cors -> cors.configurationSource(corsConfigurationSource())) // Agregar configuración de CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Agregar configuración de CORS
 
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/usuario/registro/alumno").permitAll()
+                        .requestMatchers("/usuario/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
