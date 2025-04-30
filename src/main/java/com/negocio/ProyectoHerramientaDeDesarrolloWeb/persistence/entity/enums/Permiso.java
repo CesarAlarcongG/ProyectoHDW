@@ -1,6 +1,8 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums;
 
 
+import lombok.Getter;
+
 public enum Permiso {
     /* Permisos de Usuarios */
     USUARIO_CREATE,  // ADMIN
@@ -21,7 +23,8 @@ public enum Permiso {
     MATERIAL_DELETE, // PROF
 
     /* Permisos de Sistema */
-    SYSTEM_CONFIG,   // ADMIN
-    REPORT_VIEW      // ADMIN + PROF
-
+    SYSTEM_CONFIG   // ADMIN
+   ;
+    @Getter
+    private String permisos;
 }

@@ -3,19 +3,21 @@ package com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums.Permiso;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums.Rol;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+@Builder
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +32,7 @@ public class Usuario {
     private Date fechaCreacion;
 
     @Enumerated(EnumType.STRING)
-    private Set<Rol> roles = new HashSet<>();
+    private Rol roles;
 
     @ManyToMany
     @JoinTable(
@@ -43,13 +45,20 @@ public class Usuario {
    @OneToMany(mappedBy = "docente")
     private List<Curso> cursosDocente;
 
-    //Metodos para validar rol o permiso
-    public boolean tieneRol(Rol rol) {
-        return roles.contains(rol);
-    }
-    public boolean tienePermiso(Permiso permiso) {
-        return roles.stream()
-                .anyMatch(rol -> rol.getPermisos().contains(permiso));
+
+    //Configuración de Seguridad
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+         return roles.getAuthorities();
     }
 
+    @Override
+    public String getPassword() {
+        return contraseña;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }

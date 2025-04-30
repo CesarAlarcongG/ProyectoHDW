@@ -1,7 +1,8 @@
-package com.negocio.ProyectoHerramientaDeDesarrolloWeb.controllers;
+package com.negocio.ProyectoHerramientaDeDesarrolloWeb.controller;
 
-import com.negocio.ProyectoHerramientaDeDesarrolloWeb.models.Usuario;
-import com.negocio.ProyectoHerramientaDeDesarrolloWeb.repositories.UsuarioRepository;
+
+import com.negocio.ProyectoHerramientaDeDesarrolloWeb.dto.UsuarioDto;
+import com.negocio.ProyectoHerramientaDeDesarrolloWeb.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,25 +12,22 @@ import java.util.Optional;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/usuario")
 public class UsuarioController {
-
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
-    //Crea
-    @PostMapping
-    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
-        if (usuario.getDni() == null || usuario.getDni().length() != 8) {
-            return ResponseEntity.badRequest().build();
-        }
+    //Crear alumnos /usuario/registro/alumno
+    @PostMapping("/registro/alumno")
+    public ResponseEntity<?> crearAlumno(@RequestBody UsuarioDto registroDto) {
+        return usuarioService.registrarUsuario(registroDto, "ALUMNO");
 
-        usuario.setFecha_creacion(new Date());
-        usuario.setEstado(true);
-        Usuario nuevoUsuario = usuarioRepository.save(usuario);
-        return ResponseEntity.ok(nuevoUsuario);
     }
-
+    @PostMapping("/registro/usuarios")
+    public ResponseEntity<?> crearUsuario(@RequestBody UsuarioDto registroDto) {
+        return usuarioService.registrarUsuario(registroDto, registroDto.getRol());
+    }
+/**
     //Obtiene
     @GetMapping
     public ResponseEntity<List<Usuario>> obtenerTodosUsuarios() {
@@ -76,4 +74,5 @@ public class UsuarioController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    */
 }
