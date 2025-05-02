@@ -1,5 +1,6 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.configuration.security;
 
+import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums.Permiso;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.repository.UsuarioRepository;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 
 @Configuration
@@ -47,8 +47,10 @@ public class Security {
 
                         .requestMatchers("/usuario/registro/alumno").permitAll()
                         .requestMatchers("/usuario/login").permitAll()
-                        .requestMatchers("/usuario/registro").authenticated()
-                        .requestMatchers("/usuario/actualizar").authenticated()
+                        .requestMatchers("/usuario/registro").hasAuthority(Permiso.USUARIO_CREATE.toString())
+                        .requestMatchers("/usuario/actualizar").hasAnyAuthority(
+                                Permiso.USUARIO_EDIT.toString(),
+                                Permiso.ALUMNO_EDIT.toString())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

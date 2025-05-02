@@ -8,12 +8,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public enum Rol {
     ALUMNO(Set.of(
             Permiso.CURSO_VIEW,
-            Permiso.MATERIAL_READ
+            Permiso.MATERIAL_READ,
+            Permiso.ALUMNO_EDIT
     )),
 
     PROFESOR(Set.of(
@@ -21,7 +21,8 @@ public enum Rol {
             Permiso.MATERIAL_CREATE,
             Permiso.MATERIAL_EDIT,
             Permiso.MATERIAL_DELETE,
-            Permiso.USUARIO_VIEW
+            Permiso.USUARIO_VIEW,
+            Permiso.USUARIO_EDIT
 
     )),
 

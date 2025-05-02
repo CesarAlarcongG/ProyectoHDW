@@ -9,6 +9,7 @@ public enum Permiso {
     USUARIO_EDIT,    // ADMIN
     USUARIO_DELETE,  // ADMIN
     USUARIO_VIEW,    // PROF
+    ALUMNO_EDIT,
 
     /* Permisos de Cursos */
     CURSO_CREATE,    // ADMIN

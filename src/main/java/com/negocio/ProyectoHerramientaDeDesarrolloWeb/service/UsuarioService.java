@@ -152,6 +152,8 @@ public class UsuarioService {
     }
 
 
+
+    /// ////////////////////////////////////////////////////////////////////////////
     private boolean validarExistenciaDeUsuario(String dni, String email) {
         return usuarioRepository.findByDniAndEmail(dni, email).isPresent();
     }
