@@ -1,15 +1,13 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity;
 
-import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums.Permiso;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums.Rol;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Entity
 @Getter
@@ -36,8 +34,8 @@ public class Usuario implements UserDetails {
 
     @ManyToMany
     @JoinTable(
-            name = "usuario_curso",
-            joinColumns = @JoinColumn(name = "id_usuario"),
+            name = "alumno_curso",
+            joinColumns = @JoinColumn(name = "id_alumno"),
             inverseJoinColumns = @JoinColumn(name = "id_curso")
     )
     private List<Curso> cursosAlumno;
@@ -60,5 +58,9 @@ public class Usuario implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public Usuario (String email, String contraseña, Rol rol){
+
     }
 }

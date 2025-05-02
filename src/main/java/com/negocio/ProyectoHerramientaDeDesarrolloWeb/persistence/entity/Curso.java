@@ -19,7 +19,6 @@ public class Curso {
     private Long id;
 
     private String nombre;
-    private int creditos;
 
     @ManyToMany(mappedBy = "cursosAlumno")
     private List<Usuario> alumnos;

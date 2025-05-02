@@ -13,10 +13,8 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -34,7 +32,6 @@ public class UsuarioService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
 
 
     /// /////////////////////////////////
@@ -56,6 +53,54 @@ public class UsuarioService {
         UsuarioDto respuesta = mapearRespuesta(usuario, token);
         return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
     }
+
+    /// /////////////////////////////////
+    ///
+    /// Login de usuarios
+    ///
+    /// ////////////////////////////////
+    public ResponseEntity<?> login( CredencialesDto credencialesDto) {
+        try {
+            // 1. Autenticación
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            credencialesDto.getEmail(),
+                            credencialesDto.getContraseña()
+                    )
+            );
+
+            // 2. Obtener usuario
+            Usuario usuario = usuarioRepository.findByEmail(credencialesDto.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+            // 3. Generar token
+            String token = jwtService.getToken(usuario);
+
+
+            return ResponseEntity.ok(mapearRespuesta(usuario, new TokenJwt(token)));
+
+        } catch (BadCredentialsException e) {
+            // Credenciales inválidas
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Credenciales inválidas"));
+
+        } catch (DisabledException e) {
+            // Usuario deshabilitado
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Usuario deshabilitado"));
+
+        } catch (LockedException e) {
+            // Cuenta bloqueada
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Cuenta bloqueada"));
+
+        } catch (Exception e) {
+            // Error inesperado
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error en el servidor: " + e.getMessage()));
+        }
+    }
+
 
 
     private boolean validarExistenciaDeUsuario(String dni, String email) {
@@ -98,53 +143,7 @@ public class UsuarioService {
                 .build();
     }
 
-    /// /////////////////////////////////
-    ///
-    /// Login de usuarios
-    ///
-    /// ////////////////////////////////
 
 
-    public ResponseEntity<?> login( CredencialesDto credencialesDto) {
-        try {
-            // 1. Autenticación
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            credencialesDto.getEmail(),
-                            credencialesDto.getContraseña()
-                    )
-            );
-
-            // 2. Obtener usuario
-            Usuario usuario = usuarioRepository.findByEmail(credencialesDto.getEmail())
-                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-
-            // 3. Generar token
-            String token = jwtService.getToken(usuario);
-
-
-            return ResponseEntity.ok(mapearRespuesta(usuario, new TokenJwt(token)));
-
-        } catch (BadCredentialsException e) {
-            // Credenciales inválidas
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Credenciales inválidas"));
-
-        } catch (DisabledException e) {
-            // Usuario deshabilitado
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Usuario deshabilitado"));
-
-        } catch (LockedException e) {
-            // Cuenta bloqueada
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Cuenta bloqueada"));
-
-        } catch (Exception e) {
-            // Error inesperado
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Error en el servidor: " + e.getMessage()));
-        }
-    }
 }
 
