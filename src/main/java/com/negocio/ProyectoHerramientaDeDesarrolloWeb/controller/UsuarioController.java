@@ -53,48 +53,14 @@ public class UsuarioController {
     ///
     /// ////////////////////////////////
 
-    /**
-    @PutMapping("/actualizar")
-    public ResponseEntity<?> actualizarUsuario(Usuario usuario){
 
+    @PutMapping("/actualizar")
+    public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioDto usuarioDto){
+        return usuarioService.actualizar(usuarioDto);
     }
-    +/
+
 
 /**
-    //Obtiene
-    @GetMapping
-    public ResponseEntity<List<Usuario>> obtenerTodosUsuarios() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        return ResponseEntity.ok(usuarios);
-    }
-
-    //Por id
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> obtenerUsuarioPorId(@PathVariable int id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        return usuario.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    //Actualiza
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> actualizarUsuario(
-            @PathVariable int id,
-            @RequestBody Usuario usuarioActualizado) {
-
-        return usuarioRepository.findById(id)
-                .map(usuario -> {
-                    usuario.setCodigo_utp(usuarioActualizado.getCodigo_utp());
-                    usuario.setDni(usuarioActualizado.getDni());
-                    usuario.setNombres(usuarioActualizado.getNombres());
-                    usuario.setApellidos(usuarioActualizado.getApellidos());
-                    usuario.setEmail(usuarioActualizado.getEmail());
-                    usuario.setEstado(usuarioActualizado.isEstado());
-                    Usuario usuarioGuardado = usuarioRepository.save(usuario);
-                    return ResponseEntity.ok(usuarioGuardado);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
 
     //Elimina
     @DeleteMapping("/{id}")
