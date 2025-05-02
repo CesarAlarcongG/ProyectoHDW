@@ -18,8 +18,8 @@ public class DatosIniciales {
     @Bean
     public CommandLineRunner administrador(UsuarioRepository usuarioRepository) {
         Usuario usuario = Usuario.builder()
-                .email("root")
-                .contraseña(passwordEncoder.encode("root"))
+                .email("root@root.root")
+                .contraseña(passwordEncoder.encode("root12345678"))
                 .roles(Rol.ADMINISTRADOR)
                 .build();
 
