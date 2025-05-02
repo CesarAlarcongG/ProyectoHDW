@@ -1,5 +1,6 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.dto;
 
+import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.Curso;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.TokenJwt;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class UsuarioDto {
     private String correo;
     private String contraseña;
     private String rol;
+    private List<Curso> cursos;
     private TokenJwt token;
 
 }

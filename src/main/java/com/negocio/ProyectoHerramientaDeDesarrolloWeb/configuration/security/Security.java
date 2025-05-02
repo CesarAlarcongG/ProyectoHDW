@@ -47,6 +47,7 @@ public class Security {
 
                         .requestMatchers("/usuario/registro/alumno").permitAll()
                         .requestMatchers("/usuario/login").permitAll()
+                        .requestMatchers("/usuario/registro").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

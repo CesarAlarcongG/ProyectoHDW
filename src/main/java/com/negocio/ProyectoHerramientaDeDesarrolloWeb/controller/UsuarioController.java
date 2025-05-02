@@ -3,6 +3,7 @@ package com.negocio.ProyectoHerramientaDeDesarrolloWeb.controller;
 
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.dto.CredencialesDto;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.dto.UsuarioDto;
+import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.Usuario;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class UsuarioController {
     }
 
     //Docentes y Admnistradores
-    @PostMapping("/registro/usuarios")
+    @PostMapping("/registro")
     public ResponseEntity<?> crearUsuario(@RequestBody UsuarioDto registroDto) {
         return usuarioService.registrarUsuario(registroDto, registroDto.getRol());
     }
@@ -46,6 +47,18 @@ public class UsuarioController {
         return usuarioService.login(credencialesDto);
     }
 
+    /// /////////////////////////////////
+    ///
+    /// Actualizar información
+    ///
+    /// ////////////////////////////////
+
+    /**
+    @PutMapping("/actualizar")
+    public ResponseEntity<?> actualizarUsuario(Usuario usuario){
+
+    }
+    +/
 
 /**
     //Obtiene

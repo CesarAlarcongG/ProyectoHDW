@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.Map;
 
@@ -46,12 +47,15 @@ public class UsuarioService {
         var usuario = mapearAUsuario(registroDto, rol);
 
         if (guardarUsuario(usuario) == null)
-            return new ResponseEntity<>("No se pudo crear el usuario", HttpStatus.CREATED);
+            return new ResponseEntity<>("No se pudo crear el usuario", HttpStatus.NOT_FOUND);
 
-        TokenJwt token = generarToken(usuario);
+        if(rol.equals("ALUMNO")){
+            TokenJwt token = generarToken(usuario);
+            UsuarioDto respuesta = mapearRespuesta(usuario, token);
+            return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
+        }
 
-        UsuarioDto respuesta = mapearRespuesta(usuario, token);
-        return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
+        return new ResponseEntity<>("Se creo al usuario", HttpStatus.CREATED);
     }
 
     /// /////////////////////////////////
@@ -101,7 +105,41 @@ public class UsuarioService {
         }
     }
 
+    /// /////////////////////////////////
+    ///
+    /// ACtualización de usuarios
+    ///
+    /// ////////////////////////////////
+    /**
+    public ResponseEntity<?> actualizar(UsuarioDto usuarioDto){
+        Usuario usuario = usuarioRepository.findByEmail(usuarioDto.getCorreo())
+                .orElseThrow(() -> new RuntimeException("No se encontro al usuario"));
 
+
+
+
+
+
+    }
+
+
+    public Usuario actualizarObjetoUsuario(UsuarioDto usuarioDto) throws IllegalAccessException{
+        Usuario usuario = usuarioRepository.findByEmail(usuarioDto.getCorreo())
+                .orElseThrow(() -> new RuntimeException("No se encontro al usuario"));
+
+        Field[] camposUsuario = usuarioDto.getClass().getDeclaredFields();
+        Field[] camposDto = usuario.getClass().getDeclaredFields();
+
+        for (Field campoDto : camposDto){
+            campoDto.setAccessible(true);
+            Object valor = campoDto.get(usuarioDto);
+
+            if(valor != null){
+
+            }
+        }
+    }
+     */
 
     private boolean validarExistenciaDeUsuario(String dni, String email) {
         return usuarioRepository.findByDniAndEmail(dni, email).isPresent();

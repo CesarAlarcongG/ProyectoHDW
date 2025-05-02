@@ -20,7 +20,6 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String codigoUtp;
     private String dni;
     private String nombres;
     private String apellidos;
@@ -58,9 +57,5 @@ public class Usuario implements UserDetails {
     @Override
     public String getUsername() {
         return email;
-    }
-
-    public Usuario (String email, String contraseña, Rol rol){
-
     }
 }
