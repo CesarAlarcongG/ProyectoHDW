@@ -112,7 +112,7 @@ public class UsuarioService {
     ///
     /// ////////////////////////////////
 
-    public ResponseEntity<String> actualizar(UsuarioDto dto) {
+    public ResponseEntity<?> actualizar(UsuarioDto dto) {
         Usuario usuario = usuarioRepository.findByEmail(dto.getCorreo())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + dto.getCorreo()));
 
@@ -148,7 +148,7 @@ public class UsuarioService {
         System.out.println("Este es el objeto: " +usuario.toString());
         usuarioRepository.save(usuario);
 
-        return new ResponseEntity<>("Se actualizo al usuario", HttpStatus.OK);
+        return new ResponseEntity<>(usuario,  HttpStatus.OK);
     }
 
 
