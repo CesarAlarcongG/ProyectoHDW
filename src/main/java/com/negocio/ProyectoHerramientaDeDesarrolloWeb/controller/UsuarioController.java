@@ -59,7 +59,16 @@ public class UsuarioController {
         return usuarioService.actualizar(usuarioDto);
     }
 
+    /// /////////////////////////////////
+    ///
+    /// Obtener información de  usuario
+    ///
+    /// ////////////////////////////////
 
+    @GetMapping("/obtener/{id}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable long id){
+        return usuarioService.obtenerPorId(id);
+    }
 /**
 
     //Elimina
@@ -74,4 +83,5 @@ public class UsuarioController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
     */
+
 }

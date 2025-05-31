@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -151,7 +152,19 @@ public class UsuarioService {
         return new ResponseEntity<>(usuario,  HttpStatus.OK);
     }
 
-
+    /// /////////////////////////////////
+    ///
+    /// Obtener información de  usuario
+    ///
+    /// ////////////////////////////////
+    public ResponseEntity<?> obtenerPorId(long id){
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario con id = "+id+" no encontrado"));
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
+    public ResponseEntity<?> obtenerTodos(){
+        List<Usuario> usuarios = usuarioRepository.findAll();
+    }
 
     /// ////////////////////////////////////////////////////////////////////////////
     private boolean validarExistenciaDeUsuario(String dni, String email) {
