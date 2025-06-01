@@ -40,7 +40,7 @@ public class Usuario implements UserDetails {
     )
     private List<Curso> cursosUsuario;
 
-   @OneToMany( mappedBy = "usuario")
+   @OneToMany( mappedBy = "usuarioInteresado")
     private List<Curso> areaInteres;
 
 
