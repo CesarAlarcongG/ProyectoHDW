@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,5 +27,9 @@ public class Recursos {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private Curso curso;
+
+    @OneToMany(mappedBy = "recursos")
+    private List<Actividad> actividades;
+
 
 }

@@ -43,6 +43,8 @@ public class Usuario implements UserDetails {
    @OneToMany( mappedBy = "usuarioInteresado")
     private List<Curso> areaInteres;
 
+   @OneToMany(mappedBy = "usuario")
+   private List<Actividad> actividades;
 
     //Configuración de Seguridad
     @Override
