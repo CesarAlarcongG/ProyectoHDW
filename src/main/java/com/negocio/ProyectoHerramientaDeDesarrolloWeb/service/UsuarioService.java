@@ -170,8 +170,20 @@ public class UsuarioService {
 
         return ResponseEntity.ok(usuarios);
     }
+    /// /////////////////////////////////
+    ///
+    /// Eliminar usuario
+    ///
+    /// ////////////////////////////////
 
-
+    public ResponseEntity<?> eliminarPorId(Long id) {
+        try{
+            usuarioRepository.deleteById(id);
+        } catch (Exception e){
+            System.out.println("Hay un problema al eliminar el ususario de id = "+id+ " El problema es: \n"+e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("El usuario fue eliminado con exito");
+    }
     /// ////////////////////////////////////////////////////////////////////////////
     private boolean validarExistenciaDeUsuario(String dni, String email) {
         return usuarioRepository.findByDniAndEmail(dni, email).isPresent();

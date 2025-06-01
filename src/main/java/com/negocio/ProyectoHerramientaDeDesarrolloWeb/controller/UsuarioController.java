@@ -74,6 +74,10 @@ public class UsuarioController {
     public ResponseEntity<?> obtenerTodosLosUsuarios(){
         return usuarioService.obtenerTodos();
     }
+    @PutMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id){
+        return usuarioService.eliminarPorId(id);
+    }
     /**
 
     //Elimina
