@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,26 @@ public class CursoService {
 
     }
 
+    public ResponseEntity<?> obtenerPorId(int id) {
+        try {
+            Optional<Curso> curso = cursoRepository.findById(id);
+            return ResponseEntity.status(HttpStatus.FOUND).body(curso);
+        }catch (Exception e){
+            System.out.println("No se puede obtener al usuario en la BD. El problema es: \n"+e);
+        }
+        return ResponseEntity.status(HttpStatus.FOUND).body("No se pudo encontrar en la base de datos el curso");
+    }
+
+    public ResponseEntity<?> obtenerTodos() {
+        try {
+            List<Curso> cursos = cursoRepository.findAll();
+            return ResponseEntity.status(HttpStatus.FOUND).body(cursos);
+        }catch (Exception e){
+            System.out.println("No se puede obtener a los usuarios en la BD. El problema es: \n"+e);
+        }
+        return ResponseEntity.status(HttpStatus.FOUND).body("No se pudo encontrar en la base de datos los curso");
+    }
+
 
 
     /// ////////////////////////////////////////////////////////////////////////
@@ -35,4 +56,6 @@ public class CursoService {
                 .nombre(cursoDto.getNombre())
                 .build();
     }
+
+
 }
