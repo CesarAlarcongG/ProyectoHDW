@@ -47,7 +47,15 @@ public class CursoService {
         }
         return ResponseEntity.status(HttpStatus.FOUND).body("No se pudo encontrar en la base de datos los curso");
     }
+    public ResponseEntity<?> eliminarPorId(int id) {
+        try {
+            cursoRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("El curso fue eliminado");
+        }catch (Exception e){
 
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("El curso no fue eliminado");
+    }
 
 
     /// ////////////////////////////////////////////////////////////////////////
@@ -56,6 +64,7 @@ public class CursoService {
                 .nombre(cursoDto.getNombre())
                 .build();
     }
+
 
 
 }

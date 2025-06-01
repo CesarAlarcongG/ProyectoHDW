@@ -40,4 +40,15 @@ public class CursoController {
     public ResponseEntity<?> obtenerTodos(){
         return cursoService.obtenerTodos();
     }
+
+    /// /////////////////////////////////
+    ///
+    /// Eliminar cursos
+    ///
+    /// ////////////////////////////////
+
+    @PutMapping("/eliminar/{id}")
+    public ResponseEntity<?> obtenerTodos(@PathVariable int id){
+        return cursoService.eliminarPorId(id);
+    }
 }
