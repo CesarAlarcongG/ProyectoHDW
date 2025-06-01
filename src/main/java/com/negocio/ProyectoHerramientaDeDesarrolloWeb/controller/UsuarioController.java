@@ -69,7 +69,12 @@ public class UsuarioController {
     public ResponseEntity<?> obtenerPorId(@PathVariable long id){
         return usuarioService.obtenerPorId(id);
     }
-/**
+
+    @GetMapping("/obtener")
+    public ResponseEntity<?> obtenerTodosLosUsuarios(){
+        return usuarioService.obtenerTodos();
+    }
+    /**
 
     //Elimina
     @DeleteMapping("/{id}")

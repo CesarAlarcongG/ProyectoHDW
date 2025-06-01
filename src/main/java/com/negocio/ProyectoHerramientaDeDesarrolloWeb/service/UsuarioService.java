@@ -14,11 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 @Service
@@ -162,9 +160,17 @@ public class UsuarioService {
                 .orElseThrow(() -> new RuntimeException("Usuario con id = "+id+" no encontrado"));
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
-    public ResponseEntity<?> obtenerTodos(){
+    public ResponseEntity<?> obtenerTodos() {
         List<Usuario> usuarios = usuarioRepository.findAll();
+
+        if (usuarios.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No hay usuarios registrados");
+        }
+
+        return ResponseEntity.ok(usuarios);
     }
+
 
     /// ////////////////////////////////////////////////////////////////////////////
     private boolean validarExistenciaDeUsuario(String dni, String email) {
