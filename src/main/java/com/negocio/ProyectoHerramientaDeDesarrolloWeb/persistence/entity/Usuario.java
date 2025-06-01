@@ -34,14 +34,14 @@ public class Usuario implements UserDetails {
 
     @ManyToMany
     @JoinTable(
-            name = "alumno_curso",
-            joinColumns = @JoinColumn(name = "id_alumno"),
+            name = "usuario_curso",
+            joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_curso")
     )
-    private List<Curso> cursosAlumno;
+    private List<Curso> cursosUsuario;
 
-   @OneToMany(mappedBy = "docente")
-    private List<Curso> cursosDocente;
+   @OneToMany( mappedBy = "usuario")
+    private List<Curso> areaInteres;
 
 
     //Configuración de Seguridad

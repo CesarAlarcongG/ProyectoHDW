@@ -141,7 +141,7 @@ public class UsuarioService {
         }
 
         if (dto.getCursos() != null && !dto.getCursos().isEmpty()) {
-            usuario.setCursosAlumno(dto.getCursos()); // cuidado si deseas agregar o reemplazar
+            usuario.setCursosUsuario(dto.getCursos()); // cuidado si deseas agregar o reemplazar
         }
 
         System.out.println("Este es el objeto: " +usuario.toString());

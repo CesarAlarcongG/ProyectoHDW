@@ -20,10 +20,10 @@ public class Curso {
 
     private String nombre;
 
-    @ManyToMany(mappedBy = "cursosAlumno")
-    private List<Usuario> alumnos;
+    @ManyToMany(mappedBy = "cursosUsuario")
+    private List<Usuario> usuarios;
 
     @ManyToOne
-    @JoinColumn(name = "id_docente")
-    private Usuario docente;
+    @JoinColumn(name = "usuarioInteresado")
+    private Usuario usuarioInteresado;
 }
