@@ -33,7 +33,7 @@ public class CursoController {
     ///
     /// ////////////////////////////////
     @GetMapping("/obtener/{id}")
-    public ResponseEntity<?> obtenerPorId(@PathVariable int id){
+    public ResponseEntity<?> obtenerPorId(@PathVariable Long id){
         return cursoService.obtenerPorId(id);
     }
     @GetMapping("/obtener")
@@ -48,7 +48,7 @@ public class CursoController {
     /// ////////////////////////////////
 
     @PutMapping("/eliminar/{id}")
-    public ResponseEntity<?> obtenerTodos(@PathVariable int id){
+    public ResponseEntity<?> obtenerTodos(@PathVariable Long id){
         return cursoService.eliminarPorId(id);
     }
 }

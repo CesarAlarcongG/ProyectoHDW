@@ -5,9 +5,14 @@ import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.repository.Act
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class AvtividadService {
+public class ActividadService {
     @Autowired
     private ActividadRepository actividadRepository;
 
+    public Actividad almacenarActividad(Actividad actividad){
+        return actividadRepository.save(actividad);
+    }
 }

@@ -28,7 +28,7 @@ public class CursoService {
 
     }
 
-    public ResponseEntity<?> obtenerPorId(int id) {
+    public ResponseEntity<?> obtenerPorId(Long id) {
         try {
             Optional<Curso> curso = cursoRepository.findById(id);
             return ResponseEntity.status(HttpStatus.FOUND).body(curso);
@@ -47,7 +47,7 @@ public class CursoService {
         }
         return ResponseEntity.status(HttpStatus.FOUND).body("No se pudo encontrar en la base de datos los curso");
     }
-    public ResponseEntity<?> eliminarPorId(int id) {
+    public ResponseEntity<?> eliminarPorId(Long id) {
         try {
             cursoRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).body("El curso fue eliminado");
@@ -63,6 +63,9 @@ public class CursoService {
         return Curso.builder()
                 .nombre(cursoDto.getNombre())
                 .build();
+    }
+    public Curso obtenerCursoPorId(Long id){
+        return cursoRepository.findById(id).get();
     }
 
 

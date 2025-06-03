@@ -1,5 +1,6 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums.Rol;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,6 +45,7 @@ public class Usuario implements UserDetails {
     private List<Curso> areaInteres;
 
    @OneToMany(mappedBy = "usuario")
+   @JsonManagedReference
    private List<Actividad> actividades;
 
     //Configuración de Seguridad

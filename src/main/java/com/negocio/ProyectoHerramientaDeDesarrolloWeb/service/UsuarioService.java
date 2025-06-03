@@ -224,6 +224,9 @@ public class UsuarioService {
                 .rol(usuario.getRoles().toString())
                 .build();
     }
+    public Usuario obtenerUsuarioPoId(Long id){
+        return usuarioRepository.findById(id).get();
+    }
 
 
 

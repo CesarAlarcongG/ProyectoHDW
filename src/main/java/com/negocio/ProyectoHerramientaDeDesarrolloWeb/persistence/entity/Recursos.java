@@ -1,17 +1,18 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recursos {
@@ -21,15 +22,17 @@ public class Recursos {
 
     private String titulo;
     private String descripcion;
-    private String rutaArchivo;
+    private String ubicación;
     private Date fechaCreación;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private Curso curso;
 
+
     @OneToMany(mappedBy = "recursos")
-    private List<Actividad> actividades;
+    @JsonManagedReference
+    private List<Actividad> actividades = new ArrayList<>();
 
 
 }
