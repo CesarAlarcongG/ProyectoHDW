@@ -51,6 +51,7 @@ public class Security {
                         .requestMatchers("/usuario/actualizar").hasAnyAuthority(
                                 Permiso.USUARIO_EDIT.toString(),
                                 Permiso.ALUMNO_EDIT.toString())
+                        .requestMatchers("/recurso/descargar").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

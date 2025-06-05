@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+
 @RestController
 @RequestMapping("/recurso")
 public class RecursoController {
@@ -25,4 +27,8 @@ public class RecursoController {
         return recursosService.obtenerTodosLosCursos();
     }
 
+    @GetMapping("/descargar")
+    public ResponseEntity<?> descargarArchivo(@RequestParam String nombreArchivo) {
+        return recursosService.descargarArchivo(nombreArchivo);
+    }
 }
