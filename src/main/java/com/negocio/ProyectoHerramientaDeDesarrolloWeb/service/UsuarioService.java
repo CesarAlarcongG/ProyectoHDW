@@ -44,7 +44,7 @@ public class UsuarioService {
         if (validarExistenciaDeUsuario(registroDto.getDni(), registroDto.getCorreo()))
             return new ResponseEntity<>("El usuario ya existe", HttpStatus.CONFLICT);
 
-        var usuario = mapearAUsuario(registroDto, rol);
+        Usuario usuario = mapearAUsuario(registroDto, rol);
 
         if (guardarUsuario(usuario) == null)
             return new ResponseEntity<>("No se pudo crear el usuario", HttpStatus.NOT_FOUND);
@@ -55,7 +55,7 @@ public class UsuarioService {
             return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
         }
 
-        return new ResponseEntity<>("Se creo al usuario", HttpStatus.CREATED);
+        return new ResponseEntity<>("Se creo al usuario" + guardarUsuario(usuario), HttpStatus.CREATED);
     }
 
     /// /////////////////////////////////

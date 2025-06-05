@@ -25,12 +25,12 @@ public class Actividad {
     private Permiso actividad;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "actividad_recursos")
     @JoinColumn(name = "id_recursos")
     private Recursos recursos;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "actividad_usuario")
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 }

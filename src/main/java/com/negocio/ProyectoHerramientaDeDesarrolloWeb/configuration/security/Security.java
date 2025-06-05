@@ -1,6 +1,7 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.configuration.security;
 
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums.Permiso;
+import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums.Rol;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.repository.UsuarioRepository;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class Security {
 
                         .requestMatchers("/usuario/registro/alumno").permitAll()
                         .requestMatchers("/usuario/login").permitAll()
-                        .requestMatchers("/usuario/registro").hasAuthority(Permiso.USUARIO_CREATE.toString())
+                        .requestMatchers("/usuario/registro").authenticated()
                         .requestMatchers("/usuario/actualizar").hasAnyAuthority(
                                 Permiso.USUARIO_EDIT.toString(),
                                 Permiso.ALUMNO_EDIT.toString())

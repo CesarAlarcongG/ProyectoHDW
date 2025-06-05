@@ -45,7 +45,7 @@ public class Usuario implements UserDetails {
     private List<Curso> areaInteres;
 
    @OneToMany(mappedBy = "usuario")
-   @JsonManagedReference
+   @JsonManagedReference(value = "actividad_usuario")
    private List<Actividad> actividades;
 
     //Configuración de Seguridad

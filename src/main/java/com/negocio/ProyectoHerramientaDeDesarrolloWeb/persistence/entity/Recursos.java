@@ -31,7 +31,7 @@ public class Recursos {
 
 
     @OneToMany(mappedBy = "recursos")
-    @JsonManagedReference
+    @JsonManagedReference(value = "actividad_recursos")
     private List<Actividad> actividades = new ArrayList<>();
 
 
