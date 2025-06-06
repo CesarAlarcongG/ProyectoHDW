@@ -216,6 +216,7 @@ public class UsuarioService {
 
     private UsuarioDto mapearRespuesta(Usuario usuario, TokenJwt token){
         return UsuarioDto.builder()
+                .id(usuario.getId())
                 .nombre(usuario.getNombres())
                 .apellido(usuario.getApellidos())
                 .correo(usuario.getEmail())
