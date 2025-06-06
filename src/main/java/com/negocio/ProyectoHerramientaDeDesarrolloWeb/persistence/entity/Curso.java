@@ -1,8 +1,11 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,4 +28,8 @@ public class Curso {
     @ManyToOne
     @JoinColumn(name = "usuarioInteresado")
     private Usuario usuarioInteresado;
+
+    @OneToMany(mappedBy = "curso")
+    @JsonManagedReference(value = "curso_recursos")
+    private List<Recursos> recursos = new ArrayList<>();
 }

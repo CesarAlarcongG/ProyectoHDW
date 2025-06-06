@@ -1,5 +1,6 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,6 +27,7 @@ public class Recursos {
     private Date fechaCreación;
 
     @ManyToOne
+    @JsonBackReference(value = "curso_recursos")
     @JoinColumn(referencedColumnName = "id")
     private Curso curso;
 

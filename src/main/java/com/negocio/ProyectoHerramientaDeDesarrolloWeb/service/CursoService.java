@@ -31,11 +31,11 @@ public class CursoService {
     public ResponseEntity<?> obtenerPorId(Long id) {
         try {
             Optional<Curso> curso = cursoRepository.findById(id);
-            return ResponseEntity.status(HttpStatus.FOUND).body(curso);
+            return ResponseEntity.status(HttpStatus.OK).body(curso);
         }catch (Exception e){
             System.out.println("No se puede obtener al usuario en la BD. El problema es: \n"+e);
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body("No se pudo encontrar en la base de datos el curso");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo encontrar en la base de datos el curso");
     }
 
     public ResponseEntity<?> obtenerTodos() {
@@ -47,6 +47,7 @@ public class CursoService {
         }
         return ResponseEntity.status(HttpStatus.FOUND).body("No se pudo encontrar en la base de datos los curso");
     }
+
     public ResponseEntity<?> eliminarPorId(Long id) {
         try {
             cursoRepository.deleteById(id);
