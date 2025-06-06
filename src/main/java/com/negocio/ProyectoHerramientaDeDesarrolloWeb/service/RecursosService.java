@@ -62,6 +62,10 @@ public class RecursosService {
         //4. Agregar curso
         recursoAlmacenado = agregarCurso(recursoAlmacenado, recursosDto.getIdCurso());
 
+        //5. Agregar recurso a curso
+        Curso curso = cursoService.agregarRecurso(recursoAlmacenado, recursosDto.getIdCurso());
+
+
         return ResponseEntity.ok(recursoAlmacenado);
     }
 

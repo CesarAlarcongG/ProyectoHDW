@@ -2,12 +2,14 @@ package com.negocio.ProyectoHerramientaDeDesarrolloWeb.service;
 
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.dto.CursoDto;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.Curso;
+import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.Recursos;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.repository.CursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +69,13 @@ public class CursoService {
     }
     public Curso obtenerCursoPorId(Long id){
         return cursoRepository.findById(id).get();
+    }
+
+    public Curso agregarRecurso(Recursos recursos, Long id){
+        Curso curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontro al curso con id "+id));
+         curso.getRecursos().add(recursos);
+        return cursoRepository.save(curso);
     }
 
 
