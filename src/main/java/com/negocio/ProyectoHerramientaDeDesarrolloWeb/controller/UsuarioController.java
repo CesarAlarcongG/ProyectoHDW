@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,11 +27,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    /// /////////////////////////////////
-    ///
-    /// Registro de ususarios
-    ///
-    /// ////////////////////////////////
 
     @PostMapping("/registro/alumno")
     public ResponseEntity<?> crearAlumno(@RequestBody UsuarioDto registroDto) {
@@ -79,12 +75,6 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioService.guardarUsuario(usuario), HttpStatus.CREATED);
     }
 
-    /// /////////////////////////////////
-    ///
-    /// Login
-    ///
-    /// ////////////////////////////////
-    ///
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody CredencialesDto credencialesDto){
         try {
@@ -105,12 +95,6 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hay un problema en el servidor");
     }
 
-    /// /////////////////////////////////
-    ///
-    /// Actualizar información
-    ///
-    /// ////////////////////////////////
-
     @PutMapping("/actualizar")
     public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioDto usuarioDto){
 
@@ -122,24 +106,34 @@ public class UsuarioController {
         }
     }
 
-    /// /////////////////////////////////
-    ///
-    /// Obtener información de  usuario
-    ///
-    /// ////////////////////////////////
-
     @GetMapping("/obtener/{id}")
     public ResponseEntity<?> obtenerPorId(@PathVariable long id){
-        return usuarioService.obtenerPorId(id);
+        Usuario usuario = usuarioService.obtenerPorId(id);
+        if (usuario == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+        }else {
+            return ResponseEntity.ok(usuario);
+        }
+
     }
 
     @GetMapping("/obtener")
     public ResponseEntity<?> obtenerTodosLosUsuarios(){
-        return usuarioService.obtenerTodos();
+        List<Usuario> usuarios = usuarioService.obtenerTodos();
+        if (usuarios.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarios);
     }
+
     @PutMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable Long id){
-        return usuarioService.eliminarPorId(id);
+        Usuario usuario = usuarioService.eliminarPorId(id);
+
+        if (usuario != null){
+            return ResponseEntity.internalServerError().body("no se pudo eliminar el ususario");
+        }
+        return ResponseEntity.ok("el usuario fue leminado");
     }
 
 

@@ -36,39 +36,19 @@ public class UsuarioService {
     private AuthenticationManager authenticationManager;
 
 
-    /// /////////////////////////////////
-    ///
-    /// Obtener información de  usuario
-    ///
-    /// ////////////////////////////////
-    public ResponseEntity<?> obtenerPorId(long id){
-        Usuario usuario = usuarioRepository.findById(id)
+    public Usuario obtenerPorId(long id){
+        return usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario con id = "+id+" no encontrado"));
-        return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
-    public ResponseEntity<?> obtenerTodos() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
 
-        if (usuarios.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No hay usuarios registrados");
-        }
+    public List<Usuario> obtenerTodos() {
+        return usuarioRepository.findAll();
 
-        return ResponseEntity.ok(usuarios);
     }
-    /// /////////////////////////////////
-    ///
-    /// Eliminar usuario
-    ///
-    /// ////////////////////////////////
 
-    public ResponseEntity<?> eliminarPorId(Long id) {
-        try{
-            usuarioRepository.deleteById(id);
-        } catch (Exception e){
-            System.out.println("Hay un problema al eliminar el ususario de id = "+id+ " El problema es: \n"+e);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body("El usuario fue eliminado con exito");
+    public Usuario eliminarPorId(Long id) {
+        usuarioRepository.deleteById(id);
+        return usuarioRepository.findById(id).get();
     }
 
     public Usuario actualizar(UsuarioDto dto) {
@@ -109,6 +89,7 @@ public class UsuarioService {
 
         return usuario;
     }
+
     public boolean validarExistenciaDeUsuario(String dni, String email) {
         return usuarioRepository.findByDniAndEmail(dni, email).isPresent();
     }
