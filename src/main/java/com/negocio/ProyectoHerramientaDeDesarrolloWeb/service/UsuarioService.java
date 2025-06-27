@@ -35,52 +35,7 @@ public class UsuarioService {
     private AuthenticationManager authenticationManager;
 
 
-    /// /////////////////////////////////
-    ///
-    /// Login de usuarios
-    ///
-    /// ////////////////////////////////
-    public ResponseEntity<?> login( CredencialesDto credencialesDto) {
-        try {
-            // 1. Autenticación
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            credencialesDto.getEmail(),
-                            credencialesDto.getContraseña()
-                    )
-            );
 
-            // 2. Obtener usuario
-            Usuario usuario = usuarioRepository.findByEmail(credencialesDto.getEmail())
-                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-
-            // 3. Generar token
-            String token = jwtService.getToken(usuario);
-
-
-            return ResponseEntity.ok(mapearRespuesta(usuario, new TokenJwt(token)));
-
-        } catch (BadCredentialsException e) {
-            // Credenciales inválidas
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Credenciales inválidas"));
-
-        } catch (DisabledException e) {
-            // Usuario deshabilitado
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Usuario deshabilitado"));
-
-        } catch (LockedException e) {
-            // Cuenta bloqueada
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Cuenta bloqueada"));
-
-        } catch (Exception e) {
-            // Error inesperado
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Error en el servidor: " + e.getMessage()));
-        }
-    }
 
     /// /////////////////////////////////
     ///
@@ -161,7 +116,8 @@ public class UsuarioService {
         }
         return ResponseEntity.status(HttpStatus.OK).body("El usuario fue eliminado con exito");
     }
-    /// ////////////////////////////////////////////////////////////////////////////
+
+
     public boolean validarExistenciaDeUsuario(String dni, String email) {
         return usuarioRepository.findByDniAndEmail(dni, email).isPresent();
     }
@@ -202,8 +158,23 @@ public class UsuarioService {
                 .rol(usuario.getRoles().toString())
                 .build();
     }
+
     public Usuario obtenerUsuarioPoId(Long id){
         return usuarioRepository.findById(id).get();
+    }
+
+    public void autenticarCredenciales(CredencialesDto credencialesDto) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        credencialesDto.getEmail(),
+                        credencialesDto.getContraseña()
+                )
+        );
+    }
+
+    public Usuario obtenerUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
 
 

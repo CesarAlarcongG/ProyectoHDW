@@ -32,7 +32,6 @@ public class UsuarioController {
     ///
     /// ////////////////////////////////
 
-    //Alumnos
     @PostMapping("/registro/alumno")
     public ResponseEntity<?> crearAlumno(@RequestBody UsuarioDto registroDto) {
         String rol = Rol.ALUMNO.toString();
@@ -60,7 +59,6 @@ public class UsuarioController {
 
     }
 
-    //Docentes y Admnistradores
     @PostMapping("/registro")
     public ResponseEntity<?> crearUsuario(@RequestBody UsuarioDto registroDto) {
         String rol = registroDto.getRol();
@@ -78,7 +76,7 @@ public class UsuarioController {
             return new ResponseEntity<>("No se pudo crear el usuario", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>("Se creo al usuario" + usuarioService.guardarUsuario(usuario), HttpStatus.CREATED);
+        return new ResponseEntity<>(usuarioService.guardarUsuario(usuario), HttpStatus.CREATED);
     }
 
     /// /////////////////////////////////
@@ -86,18 +84,26 @@ public class UsuarioController {
     /// Login
     ///
     /// ////////////////////////////////
-
-    /**
-     *
-     * @param credencialesDto
-     * @return
-
     //Alumnos y profesores
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody CredencialesDto credencialesDto){
-        // 1. Autenticación
+        try {
+            usuarioService.autenticarCredenciales(credencialesDto);
+
+            Usuario usuario = usuarioService.obtenerUsuarioPorEmail(credencialesDto.getEmail());
+
+            TokenJwt token = usuarioService.generarToken(usuario);
+
+            return ResponseEntity.ok(usuarioService.mapearRespuesta(usuario, token));
+
+        }catch (Exception e){
+
+            System.out.println("Error "+e);
+
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hay un problema en el servidor");
     }
-     */
 
     /// /////////////////////////////////
     ///
