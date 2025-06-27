@@ -84,7 +84,7 @@ public class UsuarioController {
     /// Login
     ///
     /// ////////////////////////////////
-    //Alumnos y profesores
+    ///
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody CredencialesDto credencialesDto){
         try {
@@ -111,10 +111,15 @@ public class UsuarioController {
     ///
     /// ////////////////////////////////
 
-
     @PutMapping("/actualizar")
     public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioDto usuarioDto){
-        return usuarioService.actualizar(usuarioDto);
+
+        Usuario usuario = usuarioService.actualizar(usuarioDto);
+        if (usuario == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en el servidor");
+        }else {
+            return ResponseEntity.ok(usuario);
+        }
     }
 
     /// /////////////////////////////////
