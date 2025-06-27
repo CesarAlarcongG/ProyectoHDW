@@ -37,29 +37,6 @@ public class UsuarioService {
 
     /// /////////////////////////////////
     ///
-    /// Registro de ususarios
-    ///
-    /// ////////////////////////////////
-    public ResponseEntity<?> registrarUsuario(UsuarioDto registroDto, String rol) {
-        if (validarExistenciaDeUsuario(registroDto.getDni(), registroDto.getCorreo()))
-            return new ResponseEntity<>("El usuario ya existe", HttpStatus.CONFLICT);
-
-        Usuario usuario = mapearAUsuario(registroDto, rol);
-
-        if (guardarUsuario(usuario) == null)
-            return new ResponseEntity<>("No se pudo crear el usuario", HttpStatus.NOT_FOUND);
-
-        if(rol.equals("ALUMNO")){
-            TokenJwt token = generarToken(usuario);
-            UsuarioDto respuesta = mapearRespuesta(usuario, token);
-            return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
-        }
-
-        return new ResponseEntity<>("Se creo al usuario" + guardarUsuario(usuario), HttpStatus.CREATED);
-    }
-
-    /// /////////////////////////////////
-    ///
     /// Login de usuarios
     ///
     /// ////////////////////////////////
@@ -185,11 +162,11 @@ public class UsuarioService {
         return ResponseEntity.status(HttpStatus.OK).body("El usuario fue eliminado con exito");
     }
     /// ////////////////////////////////////////////////////////////////////////////
-    private boolean validarExistenciaDeUsuario(String dni, String email) {
+    public boolean validarExistenciaDeUsuario(String dni, String email) {
         return usuarioRepository.findByDniAndEmail(dni, email).isPresent();
     }
 
-    private Usuario mapearAUsuario(UsuarioDto registroDto, String rol) {
+    public Usuario mapearAUsuario(UsuarioDto registroDto, String rol) {
         return Usuario.builder()
                 .dni(registroDto.getDni())
                 .nombres(registroDto.getNombre())
@@ -206,15 +183,15 @@ public class UsuarioService {
         return Rol.valueOf(rol);
     }
 
-    private Usuario guardarUsuario(Usuario usuario) {
+    public Usuario guardarUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
-    private TokenJwt generarToken(Usuario usuario) {
+    public TokenJwt generarToken(Usuario usuario) {
         return new TokenJwt(jwtService.getToken(usuario));
     }
 
-    private UsuarioDto mapearRespuesta(Usuario usuario, TokenJwt token){
+    public UsuarioDto mapearRespuesta(Usuario usuario, TokenJwt token){
         return UsuarioDto.builder()
                 .id(usuario.getId())
                 .nombre(usuario.getNombres())

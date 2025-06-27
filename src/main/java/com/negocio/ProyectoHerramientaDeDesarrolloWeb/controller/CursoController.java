@@ -23,6 +23,7 @@ public class CursoController {
     //Alumnos
     @PostMapping("/registro")
     public ResponseEntity<?> registrarCurso(@RequestBody CursoDto cursoDto) {
+
         return cursoService.registrarCurso(cursoDto);
 
     }
