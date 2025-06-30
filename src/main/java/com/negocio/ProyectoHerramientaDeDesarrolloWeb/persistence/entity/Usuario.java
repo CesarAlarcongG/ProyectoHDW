@@ -17,6 +17,13 @@ import java.util.*;
 @AllArgsConstructor
 @Builder
 @ToString
+@Table(
+        indexes = {
+                @Index(name = "idx_email", columnList = "email"),
+                @Index(name = "idx_nombre", columnList = "nombre"),
+                @Index(name = "idx_dni_email", columnList = "dni, email")
+        }
+)
 public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,22 +34,25 @@ public class Usuario implements UserDetails {
     private String apellidos;
     private String email;
     private String contraseña;
-    private boolean estado;
-    private Date fechaCreacion;
 
     @Enumerated(EnumType.STRING)
     private Rol roles;
 
     @ManyToMany
     @JoinTable(
-            name = "usuario_curso",
+            name = "curso_docente",
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_curso")
     )
-    private List<Curso> cursosUsuario;
+    private List<Curso> cursosDocente;
 
-   @OneToMany( mappedBy = "usuarioInteresado")
-    private List<Curso> areaInteres;
+    @ManyToMany
+    @JoinTable(
+            name = "curso_estudiante",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_curso")
+    )
+    private List<Curso> cursosEstudiantes;
 
    @OneToMany(mappedBy = "usuario")
    @JsonManagedReference(value = "actividad_usuario")

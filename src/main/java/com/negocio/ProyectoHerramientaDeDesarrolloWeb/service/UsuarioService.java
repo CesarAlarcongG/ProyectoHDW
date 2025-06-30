@@ -7,17 +7,12 @@ import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.Usuario
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity.enums.Rol;
 import com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 @Service
@@ -101,8 +96,6 @@ public class UsuarioService {
                 .apellidos(registroDto.getApellido())
                 .email(registroDto.getCorreo())
                 .contraseña(passwordEncoder.encode(registroDto.getContraseña()))
-                .estado(true)
-                .fechaCreacion(new Date())
                 .roles(registrarRol(rol))
                 .build();
     }

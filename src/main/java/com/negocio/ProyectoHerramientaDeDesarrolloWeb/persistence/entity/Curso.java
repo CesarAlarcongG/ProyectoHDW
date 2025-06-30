@@ -1,6 +1,5 @@
 package com.negocio.ProyectoHerramientaDeDesarrolloWeb.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,12 +21,11 @@ public class Curso {
     @Column(unique = true)
     private String nombre;
 
-    @ManyToMany(mappedBy = "cursosUsuario")
-    private List<Usuario> usuarios;
+    @ManyToMany(mappedBy = "cursosDocente")
+    private List<Usuario> docentes;
 
-    @ManyToOne
-    @JoinColumn(name = "usuarioInteresado")
-    private Usuario usuarioInteresado;
+    @ManyToMany(mappedBy = "cursosDocente")
+    private List<Usuario> estudiantes;
 
     @OneToMany(mappedBy = "curso")
     @JsonManagedReference(value = "curso_recursos")
