@@ -11,6 +11,7 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,22 +47,44 @@ public class UsuarioService {
         return usuarioRepository.findById(id).get();
     }
 
-    public Usuario actualizarInformación(UsuarioDto dto) {
-        Usuario usuario = Usuario.builder()
-                .dni(dto.getDni())
-                .nombres(dto.getNombre())
-                .apellidos(dto.getApellido())
-                .email(dto.getCorreo())
-                .contraseña(passwordEncoder.encode(dto.getContraseña()))
-                .build();
-        if(dto.getRol() != null){
-            usuario.setRoles(Rol.valueOf(dto.getRol()));
+    @Transactional
+    public Usuario actualizarInformacion(UsuarioDto dto) {
+        // 1. Obtener el usuario desde la base de datos
+        Usuario usuario = usuarioRepository.findById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // 2. Actualizar campos básicos
+        if (dto.getDni() != null) usuario.setDni(dto.getDni());
+        if (dto.getNombre() != null) usuario.setNombres(dto.getNombre());
+        if (dto.getApellido() != null) usuario.setApellidos(dto.getApellido());
+        if (dto.getCorreo() != null) usuario.setEmail(dto.getCorreo());
+
+        // 3. Actualizar contraseña si viene en el DTO
+        if (dto.getContraseña() != null && !dto.getContraseña().isBlank()) {
+            usuario.setContraseña(passwordEncoder.encode(dto.getContraseña()));
+        }
+
+        // 4. Actualizar rol si viene
+        if (dto.getRol() != null) {
+            try {
+                Rol rol = Rol.valueOf(dto.getRol());
+                usuario.setRoles(rol);
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Rol inválido: " + dto.getRol());
+            }
+        }
+
+        // 5. Actualizar cursos según el rol
+        if (usuario.getRoles() == Rol.PROFESOR && dto.getCursosProfesor() != null) {
             usuario.setCursosDocente(dto.getCursosProfesor());
-        }else{
+        } else if (usuario.getRoles() == Rol.ALUMNO && dto.getCursosEstudiante() != null) {
             usuario.setCursosEstudiantes(dto.getCursosEstudiante());
         }
+
+        // 6. Guardar cambios
         return usuarioRepository.save(usuario);
     }
+
 
     public boolean validarExistenciaDeUsuario(String dni, String email) {
         return usuarioRepository.findByDniAndEmail(dni, email).isPresent();

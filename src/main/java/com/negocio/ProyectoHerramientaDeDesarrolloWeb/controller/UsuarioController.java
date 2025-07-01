@@ -97,7 +97,7 @@ public class UsuarioController {
 
     @PutMapping("/actualizar")
     public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioDto usuarioDto){
-        Usuario usuario = usuarioService.actualizarInformación(usuarioDto);
+        Usuario usuario = usuarioService.actualizarInformacion(usuarioDto);
         if (usuario == null){
             return ResponseEntity.internalServerError().build();
         }

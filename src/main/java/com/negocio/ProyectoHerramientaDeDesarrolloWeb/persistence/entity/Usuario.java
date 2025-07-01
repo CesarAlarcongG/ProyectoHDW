@@ -20,7 +20,7 @@ import java.util.*;
 @Table(
         indexes = {
                 @Index(name = "idx_email", columnList = "email"),
-                @Index(name = "idx_nombre", columnList = "nombre"),
+                @Index(name = "idx_nombre", columnList = "nombres"),
                 @Index(name = "idx_dni_email", columnList = "dni, email")
         }
 )
