@@ -46,43 +46,21 @@ public class UsuarioService {
         return usuarioRepository.findById(id).get();
     }
 
-    public Usuario actualizar(UsuarioDto dto) {
-        Usuario usuario = usuarioRepository.findByEmail(dto.getCorreo())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + dto.getCorreo()));
-
-        // Actualizamos solo los campos permitidos si no son nulos o vacíos
-        if (dto.getDni() != null && !dto.getDni().isBlank()) {
-            usuario.setDni(dto.getDni());
+    public Usuario actualizarInformación(UsuarioDto dto) {
+        Usuario usuario = Usuario.builder()
+                .dni(dto.getDni())
+                .nombres(dto.getNombre())
+                .apellidos(dto.getApellido())
+                .email(dto.getCorreo())
+                .contraseña(passwordEncoder.encode(dto.getContraseña()))
+                .build();
+        if(dto.getRol() != null){
+            usuario.setRoles(Rol.valueOf(dto.getRol()));
+            usuario.setCursosDocente(dto.getCursosProfesor());
+        }else{
+            usuario.setCursosEstudiantes(dto.getCursosEstudiante());
         }
-
-        if (dto.getNombre() != null && !dto.getNombre().isBlank()) {
-            usuario.setNombres(dto.getNombre());
-        }
-
-        if (dto.getApellido() != null && !dto.getApellido().isBlank()) {
-            usuario.setApellidos(dto.getApellido());
-        }
-
-        if (dto.getContraseña() != null && !dto.getContraseña().isBlank()) {
-            usuario.setContraseña(passwordEncoder.encode(dto.getContraseña()));
-        }
-
-        if (dto.getRol() != null && !dto.getRol().isBlank()) {
-            try {
-                usuario.setRoles(Rol.valueOf(dto.getRol().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Rol inválido: " + dto.getRol());
-            }
-        }
-
-        if (dto.getCursos() != null && !dto.getCursos().isEmpty()) {
-            usuario.setCursosUsuario(dto.getCursos()); // cuidado si deseas agregar o reemplazar
-        }
-
-        System.out.println("Este es el objeto: " +usuario.toString());
-        usuarioRepository.save(usuario);
-
-        return usuario;
+        return usuarioRepository.save(usuario);
     }
 
     public boolean validarExistenciaDeUsuario(String dni, String email) {

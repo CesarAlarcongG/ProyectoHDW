@@ -28,7 +28,7 @@ public class JwtService {
                 .setClaims(extraClaim)
                 .setSubject(usuario.getUsername())
                 .setIssuedAt(new java.util.Date(System.currentTimeMillis()))
-                .setExpiration(new java.util.Date(System.currentTimeMillis() + 1000 * 60 * 24)) // 24 minutos
+                .setExpiration(new java.util.Date(System.currentTimeMillis() + 10000 * 60 * 24)) // 24 horas
                 .signWith(key, SignatureAlgorithm.HS256) // Usa la clave constante
                 .compact();
     }

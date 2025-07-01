@@ -19,7 +19,8 @@ public class UsuarioDto {
     private String correo;
     private String contraseña;
     private String rol;
-    private List<Curso> cursos;
+    private List<Curso> cursosEstudiante;
+    private List<Curso> cursosProfesor;
     private TokenJwt token;
 
 }
